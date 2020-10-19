@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 public class ScoreController : MonoBehaviour
 {
@@ -14,6 +12,6 @@ public class ScoreController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        scoreText.text = "Score: "+ BulletController.score;
+        scoreText.text = BulletController.score.ToString();
     }
 }

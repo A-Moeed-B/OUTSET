@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
 public class BulletController : MonoBehaviour
 {
     private float velX = 0f;
@@ -11,7 +8,7 @@ public class BulletController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        bullet = GetComponent < Rigidbody2D>() ;
+        bullet = GetComponent <Rigidbody2D>() ;
     }
 
     // Update is called once per frame
@@ -26,8 +23,8 @@ public class BulletController : MonoBehaviour
         {
             Destroy(collision.gameObject);
             Destroy(gameObject);
-            score++;
-            Debug.Log("Current Score "+ score);
+            score+=10;
         }
+     
     }
 }

@@ -1,30 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 /* 
  * To be Read by Faisal & Sunduss only
  * This script is used for the movement of the player spaceship
- * This will move at the speed of 5.
- * Gravity has been set to 0 so that the player does not fall
- * after moving vertically and stays in its location 
- * unless its updated
  * TODO:
- * 1- Refine Movement
- * 2- Add Collision detectors on the side of the map-DONE
- * 3- (Related to Level_001) Add textures and sprites  
- * 4- Issues with movement; automatically moves to the Left/Right-
- * 5- Finiky Bullet Physics???-DONE
  * 
- * right after collision-
 */
 public class SpaceshipController : MonoBehaviour
 {
-    public float speed=5f;
+    public float speed=7f;
     public GameObject bullet;
     Vector2 bulletPosition;
     public float fireRate = 0.5f;
     float nextFire = 0f;
-    public static int health = 10;
+    public static int health = 3;
+    private int numOfHearts=3;
+    public Image[] hearts;
+    public Sprite fullHeart;
+    public Sprite deadHeart;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,26 +29,53 @@ public class SpaceshipController : MonoBehaviour
     {
         Vector3 MovementDirection = new Vector3(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical"),0);
         transform.position += MovementDirection * speed * Time.deltaTime;
+
+        transform.localEulerAngles = new Vector3(0, 0, 15f);
         if (Input.GetButtonDown("Fire1") && Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
             fire();
         }
-
+        transform.position = clampCamera();
+        
     }
-    void fire()
+    private void fire()
     {
         bulletPosition = transform.position;
-        bulletPosition = new Vector2(transform.position.x, 0.76f);
+        bulletPosition = new Vector2(transform.position.x, transform.position.y+1.5f);
         Instantiate(bullet,bulletPosition,Quaternion.identity);
-
+    }
+    private Vector3 clampCamera()
+    {
+        Vector3 clampedPosition = transform.position;
+        clampedPosition.x = Mathf.Clamp(clampedPosition.x, -10f, 10f);
+        clampedPosition.y = Mathf.Clamp(clampedPosition.y, -5.84f, 5.9f);
+        return clampedPosition;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.name == "Enemy(Clone)")
+        {
             health--;
-        Debug.Log("Current Health" + health);
+            Destroy(collision.gameObject);
+            checkHealth();
+        }
+        //Debug.Log("Current Health" + health);
         if (health == 0)
             Destroy(gameObject);
+    }
+    void checkHealth()
+    {
+        for (int i = 0; i < hearts.Length; i++)
+        {
+            if (i < health)
+                hearts[i].sprite = fullHeart;
+            else
+                hearts[i].sprite = deadHeart;
+            if (i < numOfHearts)
+                hearts[i].enabled = true;
+            else
+                hearts[i].enabled = false;
+        }
     }
 }
