@@ -16,6 +16,7 @@ public class EnemyController : MonoBehaviour
         if (dir != Vector2.zero)
             transform.rotation = Quaternion.LookRotation(dir);*/
         transform.Rotate(new Vector3(0, 0,rotZ+2.0f ));
+      
         Destroy(gameObject, 3f);
         
     }

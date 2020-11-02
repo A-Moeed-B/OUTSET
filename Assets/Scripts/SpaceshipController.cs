@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 /* 
  * To be Read by Faisal & Sunduss only
  * This script is used for the movement of the player spaceship
@@ -10,40 +11,49 @@ public class SpaceshipController : MonoBehaviour
 {
     public float speed=7f;
     public GameObject bullet;
-    Vector2 bulletPosition;
+    private Vector2 bulletPosition;
     public float fireRate = 0.5f;
-    float nextFire = 0f;
+    private float nextFire = 0f;
     public static int health = 3;
     private int numOfHearts=3;
     public Image[] hearts;
     public Sprite fullHeart;
     public Sprite deadHeart;
+    public Joystick input;
+    public Button fireButton;
     // Start is called before the first frame update
     void Start()
     {
-     
+        fireButton.onClick.AddListener(fire);
     }
-
     // Update is called once per frame
     void Update()
     {
-        Vector3 MovementDirection = new Vector3(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical"),0);
+        //for mobile
+        Vector3 MovementDirection = new Vector3(input.Horizontal,input.Vertical,0);
         transform.position += MovementDirection * speed * Time.deltaTime;
+        //for computer testing
 
-        transform.localEulerAngles = new Vector3(0, 0, 15f);
-        if (Input.GetButtonDown("Fire1") && Time.time > nextFire)
-        {
-            nextFire = Time.time + fireRate;
-            fire();
-        }
+        /*
+         * TODO: Add Tilt to Spaceship-DONE
+         */
+        addTilt();
+        
         transform.position = clampCamera();
         
     }
     private void fire()
     {
-        bulletPosition = transform.position;
-        bulletPosition = new Vector2(transform.position.x, transform.position.y+1.5f);
-        Instantiate(bullet,bulletPosition,Quaternion.identity);
+        
+        if (Time.time > nextFire)
+        {
+            nextFire = Time.time + fireRate;
+            bulletPosition = transform.position;
+            bulletPosition = new Vector2(transform.position.x, transform.position.y + 1.5f);
+            Instantiate(bullet, bulletPosition, Quaternion.identity);
+
+        }
+       
     }
     private Vector3 clampCamera()
     {
@@ -64,7 +74,7 @@ public class SpaceshipController : MonoBehaviour
         if (health == 0)
             Destroy(gameObject);
     }
-    void checkHealth()
+    private void checkHealth()
     {
         for (int i = 0; i < hearts.Length; i++)
         {
@@ -77,5 +87,14 @@ public class SpaceshipController : MonoBehaviour
             else
                 hearts[i].enabled = false;
         }
+    }
+    private void addTilt()
+    {
+        if (input.Horizontal < 0)
+            transform.localEulerAngles = new Vector3(0, 0, 15f);
+        else if (input.Horizontal > 0)
+            transform.localEulerAngles = new Vector3(0, 0, -15f);
+        else
+            transform.localEulerAngles = new Vector3(0, 0, 0);
     }
 }

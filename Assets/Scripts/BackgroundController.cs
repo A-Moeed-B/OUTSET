@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BackgroundController : MonoBehaviour
 {
-    public float backSpeed = 0.1f;
+    public float backSpeed = 5f;
     private MeshRenderer renderer;
     // Start is called before the first frame update
     void Start()

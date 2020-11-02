@@ -2,20 +2,27 @@
 public class SpawnController : MonoBehaviour
 {
     // Start is called before the first frame update
-    public GameObject enemy;
+    //public GameObject enemy;
+    public GameObject [] randomEnemies;
     float randX;
     Vector3 spawnPoint;
     private float spawnRate = 2f;
     float nextSpawn = 0f;
     Rigidbody2D enemyBody;
     float fallSpeed;
+    int randomNumber;
     void Start()
     {
-        enemyBody = enemy.gameObject.GetComponent<Rigidbody2D>();
+        //enemyBody = enemy.gameObject.GetComponent<Rigidbody2D>();
+        for (int i = 0; i < 8; i++)
+            randomEnemies[i].gameObject.name = "Enemy";
     }
     // Update is called once per frame
     void Update()
     {
+        randomNumber = Random.Range(0, 7);
+        enemyBody = randomEnemies[randomNumber].GetComponent<Rigidbody2D>();
+    
         if (Time.time > nextSpawn)
         {
             if (BulletController.score < 50)
@@ -29,8 +36,11 @@ public class SpawnController : MonoBehaviour
             enemyBody.gravityScale = fallSpeed;
             //Debug.Log(enemyBody.gravityScale);
             spawnPoint = new Vector3(randX, transform.position.y);
-            Instantiate(enemy, spawnPoint, Quaternion.identity);
+            Instantiate(randomEnemies[randomNumber], spawnPoint, Quaternion.identity);
         }
+    }
+    void FixedUpdate()
+    {    
     }
     void firstWave()
     {
