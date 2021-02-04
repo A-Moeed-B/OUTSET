@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
+
 public class ScoreController : MonoBehaviour
 {
     // Start is called before the first frame update

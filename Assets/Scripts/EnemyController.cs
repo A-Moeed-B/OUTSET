@@ -20,8 +20,4 @@ public class EnemyController : MonoBehaviour
         Destroy(gameObject, 3f);
         
     }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        Destroy(gameObject);
-    }
 }

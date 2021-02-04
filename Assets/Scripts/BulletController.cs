@@ -5,13 +5,13 @@ public class BulletController : MonoBehaviour
     public float velY = 8F;
     Rigidbody2D bullet;
     public static int score = 0;
-    // Start is called before the first frame update
     void Start()
     {
         bullet = GetComponent <Rigidbody2D>() ;
+     
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         bullet.velocity = new Vector2(velX, velY);
@@ -19,12 +19,21 @@ public class BulletController : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.name=="Enemy(Clone)")
+        if (collision.gameObject.name == "Enemy(Clone)")
         {
             Destroy(collision.gameObject);
+            FindObjectOfType<AudioManager>().play("destruction");
             Destroy(gameObject);
-            score+=10;
+            score += 100;
         }
-     
+        else if (collision.gameObject.name == "Boss(Clone)")
+        {
+            BossController.bossHealth--;
+            FindObjectOfType<AudioManager>().play("destruction");
+            Destroy(gameObject);
+            Debug.Log("Health Boss:" + BossController.bossHealth);
+        }
+        
+
     }
 }

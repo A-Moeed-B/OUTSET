@@ -6,6 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Level_001.unity
+    path: Assets/Scenes/Intro.unity
+    guid: c56bd44af56dadd499e054d2dd528a03
+  - enabled: 1
+    path: Assets/Scenes/Main Menu/MainMenu.unity
+    guid: 8943d7bff8ea6274bbeaf2b3bac03e57
+  - enabled: 1
+    path: Assets/Scenes/Level_001/Cutscene.unity
+    guid: f323ff2efb49ef849a302bc348506e35
+  - enabled: 1
+    path: Assets/Scenes/Level_001/Level_001.unity
     guid: 91859041870d83446bc88cc6e0181f47
+  - enabled: 1
+    path: Assets/Scenes/MissionSuccess/MissionSuccess.unity
+    guid: 6ef8e19f8a4f23c4c9777d7fffa7affe
+  - enabled: 1
+    path: Assets/Scenes/GameOver/GameOver.unity
+    guid: 6e41d32ff05d69349abf91b25a1f3fa7
   m_configObjects: {}

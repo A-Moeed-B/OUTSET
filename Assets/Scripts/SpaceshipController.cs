@@ -1,46 +1,48 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-/* 
- * To be Read by Faisal & Sunduss only
- * This script is used for the movement of the player spaceship
- * TODO:
- * 
-*/
+using UnityEngine.SceneManagement;
+
 public class SpaceshipController : MonoBehaviour
-{
+{  
     public float speed=7f;
     public GameObject bullet;
-    private Vector2 bulletPosition;
     public float fireRate = 0.5f;
-    private float nextFire = 0f;
     public static int health = 3;
-    private int numOfHearts=3;
     public Image[] hearts;
     public Sprite fullHeart;
     public Sprite deadHeart;
     public Joystick input;
     public Button fireButton;
+    public static float scoreRate = 0.8f;
+    private float nextScore = 0f;
+    private Vector2 bulletPosition;
+    private float nextFire = 0f;
+    private int numOfHearts = 3;
     // Start is called before the first frame update
     void Start()
     {
         fireButton.onClick.AddListener(fire);
     }
-    // Update is called once per frame
     void Update()
-    {
+    {   
         //for mobile
         Vector3 MovementDirection = new Vector3(input.Horizontal,input.Vertical,0);
         transform.position += MovementDirection * speed * Time.deltaTime;
-        //for computer testing
-
-        /*
-         * TODO: Add Tilt to Spaceship-DONE
-         */
+        scoreUpdate();
         addTilt();
         
         transform.position = clampCamera();
         
+    }
+    void scoreUpdate()
+    {
+        
+        if (Time.time > nextScore)
+        {
+            nextScore = Time.time + scoreRate;
+            BulletController.score += 10;
+        }
     }
     private void fire()
     {
@@ -70,9 +72,13 @@ public class SpaceshipController : MonoBehaviour
             Destroy(collision.gameObject);
             checkHealth();
         }
-        //Debug.Log("Current Health" + health);
-        if (health == 0)
+        else if (collision.gameObject.name=="Boss(Clone)")
             Destroy(gameObject);
+        if (health == 0)
+        {
+            Destroy(gameObject);
+            SceneManager.LoadScene("GameOver");
+        }
     }
     private void checkHealth()
     {
@@ -96,5 +102,12 @@ public class SpaceshipController : MonoBehaviour
             transform.localEulerAngles = new Vector3(0, 0, -15f);
         else
             transform.localEulerAngles = new Vector3(0, 0, 0);
+    }
+    public static void endLevel()
+    {
+        BulletController.score = 0;
+        health = 3;
+        BackgroundController.backSpeed = 0.1f;
+        BossController.bossHealth = 10;
     }
 }
