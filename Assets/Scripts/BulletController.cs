@@ -33,7 +33,6 @@ public class BulletController : MonoBehaviour
             Destroy(gameObject);
             Debug.Log("Health Boss:" + BossController.bossHealth);
         }
-        
-
     }
+
 }
