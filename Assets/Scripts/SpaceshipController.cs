@@ -4,8 +4,8 @@ using TMPro;
 using UnityEngine.SceneManagement;
 
 public class SpaceshipController : MonoBehaviour
-{
-    public float speed = 7f;
+{  
+    public float speed=7f;
     public GameObject bullet;
     public float fireRate = 0.5f;
     public static int health = 3;
@@ -25,19 +25,19 @@ public class SpaceshipController : MonoBehaviour
         fireButton.onClick.AddListener(fire);
     }
     void Update()
-    {
+    {   
         //for mobile
-        Vector3 MovementDirection = new Vector3(input.Horizontal, input.Vertical, 0);
+        Vector3 MovementDirection = new Vector3(input.Horizontal,input.Vertical,0);
         transform.position += MovementDirection * speed * Time.deltaTime;
         scoreUpdate();
         addTilt();
-
+        
         transform.position = clampCamera();
-
+        
     }
     void scoreUpdate()
     {
-
+        
         if (Time.time > nextScore)
         {
             nextScore = Time.time + scoreRate;
@@ -46,7 +46,7 @@ public class SpaceshipController : MonoBehaviour
     }
     private void fire()
     {
-
+        
         if (Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
@@ -55,7 +55,7 @@ public class SpaceshipController : MonoBehaviour
             Instantiate(bullet, bulletPosition, Quaternion.identity);
 
         }
-
+       
     }
     private Vector3 clampCamera()
     {
@@ -72,7 +72,7 @@ public class SpaceshipController : MonoBehaviour
             Destroy(collision.gameObject);
             checkHealth();
         }
-        else if (collision.gameObject.name == "Boss(Clone)")
+        else if (collision.gameObject.name=="Boss(Clone)")
             Destroy(gameObject);
         if (health == 0)
         {
@@ -105,7 +105,6 @@ public class SpaceshipController : MonoBehaviour
     }
     public static void endLevel()
     {
-        PlayerPrefs.SetInt("SCORE", BulletController.score);
         BulletController.score = 0;
         health = 3;
         BackgroundController.backSpeed = 0.1f;
